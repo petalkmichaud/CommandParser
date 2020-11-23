@@ -21,19 +21,26 @@ public class tester {
 		String commandText=Arrays.toString(jesusThisIsHard);
 	    commandText="COMMIT";
 		CommandParser obj=new CommandParser(parser, commandText);
+		
 		cs350f20project.Startup obj1=new cs350f20project.Startup();
 		String id=obj.getID();
 		CoordinatesWorld coordinates_world=obj.getWorldCoordinates();
 		CoordinatesDelta coordinates_delta1=obj.getStartCoordinates();
 		CoordinatesDelta coordinates_delta2=obj.getEndCoordinates();
+		double number=obj.getNumber();
 		String[] command44=("CREATE TRACK "+id+"REFERENCE "+coordinates_world+"DELTA START "+coordinates_delta1+"END "+coordinates_delta2).split(" ");
-		commandText=Arrays.toString(command44);
+		String[] command43=("CREATE TRACK CURVE "+id+"REFERENCE "+coordinates_world+"DELTA START "+coordinates_delta1+"END"+coordinates_delta2+"DISTANCE ORIGIN "+number).split(" ");
+		commandText=Arrays.toString(command43);
 		obj= new CommandParser(parser, commandText);
 		 //obj1.go();
-		
+		 
+	     
 	     obj.parse();
-       
+	     commandText="COMMIT";
+	     obj=new CommandParser(parser, commandText);
+	     obj.parse();
 	}
 	
 
 }
+
