@@ -61,26 +61,23 @@ public class CommandParser {
     //need to go back and add $ 
 	String[] x=("Do Break "+id).split(" ");        
 	//#44
-	 String[] command44=("CREATE TRACK "+id+"REFERENCE "+coordinates_world+"DELTA START "+coordinates_delta1+"END "+coordinates_delta2).split(" ");
-	    String[] command442=("CREATE TRACK "+id+"REFERENCE "+id1+"DELTA START "+coordinates_delta1+"END "+coordinates_delta2).split(" ");      //#44
+	 String[] command44=("CREATE TRACK "+id1+"REFERENCE "+coordinates_world+"'$' "+id2+"DELTA START "+coordinates_delta1+"END "+coordinates_delta2).split(" ");
+
 	//43    
-	    String[] command43=("CREATE TRACK CURVE "+id+"REFERENCE "+coordinates_world+"DELTA START "+coordinates_delta1+"END"+coordinates_delta2+"DISTANCE ORIGIN "+number).split(" ");
-	    String[] command432=("CREATE TRACK CURVE "+id+"REFERENCE "+id1+"DELTA START "+coordinates_delta1+"END"+coordinates_delta2+"DISTANCE ORIGIN "+number).split(" ");
-	    String[] command433=("CREATE TRACK CURVE "+id+"REFERENCE "+coordinates_world+"DELTA START "+coordinates_delta1+"END"+coordinates_delta2+"DISTANCE ORIGIN "+coordinates_delta3).split(" ");
-	    String[] command434=("CREATE TRACK CURVE "+id+"REFERENCE "+id1+"DELTA START "+coordinates_delta1+"END"+coordinates_delta2+"DISTANCE ORIGIN "+coordinates_delta3).split(" ");
-	//6
-	    String[] command6=("DO SELECT DRAWBRIDGE "+id+"POSITION UP").split(" ");
-	    String[] command61=("DO SELECT DRAWBRIDGE "+id+"POSITION DOWN").split(" ");
+	    String[] command43=("CREATE TRACK CURVE "+id1+"REFERENCE "+coordinates_world+"'$' "+id2+"DELTA START "+coordinates_delta1+"END"+coordinates_delta2+"DISTANCE ORIGIN "+number+" | "+"ORIGIN "+coordinates_delta3).split(" ");
+
+
 	//22 
 	    String[] command22=("CREATE POWER CATENARY "+id1+"WITH POLES "+idn+"+").split(" ");
 	//23 
-	    String[] command23=("CREATE POWER POLE "+id1+"ON TRACK "+id2+"DISTANCE "+number+"FROM "+"START").split(" ");
-	    String[] command232=("CREATE POWER POLE "+id1+"ON TRACK "+id2+"DISTANCE "+number+"FROM "+"END").split(" ");
+	    String[] command23=("CREATE POWER POLE "+id1+"ON TRACK "+id2+"DISTANCE "+number+"FROM "+"START | END").split(" ");
+	  
 	//24
-	    String[] command24=("CREATE POWER STATION "+id1+"REFERENCE "+coordinates_world+"DELTA "+coordinates_delta+"WITH SUBSTATION").split(" ");
-	    String[] command242=("CREATE POWER STATION "+id1+"REFERENCE "+id2+"DELTA "+coordinates_delta+"WITH SUBSTATION").split(" ");
-	    String[] command243=("CREATE POWER STATION "+id1+"REFERENCE "+coordinates_world+"DELTA "+coordinates_delta+"WITH SUBSTATIONS").split(" ");
-	    String[] command244=("CREATE POWER STATION "+id1+"REFERENCE "+id2+"DELTA "+coordinates_delta+"WITH SUBSTATIONS").split(" ");
+	    String[] command24=("CREATE POWER STATION "+id1+"REFERENCE "+coordinates_world+"'$' "+id2+"DELTA "+coordinates_delta+"WITH SUBSTATION | SUBSTATIONS").split(" ");
+
+	//25
+	    String[] command25=("CREATE POWER SUBSTATION "+id1+"REFERENCE "+ coordinates_world+"'$' "+id1+"DELTA "+coordinates_delta+"WITH CATENARIES "+idn+"+").split(" "); 
+	    
 	    if(this.commandText.equals("COMMIT")) {
 	    	A_Command command=new CommandStructuralCommit();
 	    	this.parserHelper.getActionProcessor().schedule(command);
@@ -93,29 +90,18 @@ public class CommandParser {
 
 		}
 	   
-	    else if(this.commandText.equalsIgnoreCase(Arrays.toString(command44)) || this.commandText.equalsIgnoreCase(Arrays.toString(command442))) {              //44
+	    else if(this.commandText.equalsIgnoreCase(Arrays.toString(command44))) {              //44
 	    	//
 	    	A_Command command=new CommandCreateTrackEnd(id, locater);
 	    	this.parserHelper.getActionProcessor().schedule(command);
 	    	//System.out.println(Arrays.toString(command44));
 	    }
-	    else if(this.commandText.equalsIgnoreCase(Arrays.toString(command43)) || this.commandText.equalsIgnoreCase(Arrays.toString(command432))) {
+	    else if(this.commandText.equalsIgnoreCase(Arrays.toString(command43))) {
 	    	A_Command command=new CommandCreateTrackCurve(id, coordinates_world, coordinates_delta1, coordinates_delta2, number);
 	    	this.parserHelper.getActionProcessor().schedule(command);
 	    }
-	    else if(this.commandText.equalsIgnoreCase(Arrays.toString(command433)) || this.commandText.equalsIgnoreCase(Arrays.toString(command434))) {
-	    	A_Command command=new CommandCreateTrackCurve(id, coordinates_world, coordinates_delta1, coordinates_delta2, coordinates_delta3);
-	    	this.parserHelper.getActionProcessor().schedule(command);
-	    	
-	    }
-	    else if(this.commandText.equalsIgnoreCase(Arrays.toString(command6))) {
-	    	A_Command command=new CommandBehavioralSelectBridge(id, true);
-	    	this.parserHelper.getActionProcessor().schedule(command);
-	    }
-	    else if(this.commandText.equalsIgnoreCase(Arrays.toString(command61))) {
-	    	A_Command command=new CommandBehavioralSelectBridge(id, true);
-	    	this.parserHelper.getActionProcessor().schedule(command);
-	    }
+
+
 	    else if(this.commandText.equalsIgnoreCase(Arrays.toString(command22))) {
 	    	A_Command command=new CommandCreatePowerCatenary(id, idpoles);
 	    	this.parserHelper.getActionProcessor().schedule(command);
@@ -124,12 +110,13 @@ public class CommandParser {
 	    	A_Command command=new CommandCreatePowerPole(id, START);
 	    	this.parserHelper.getActionProcessor().schedule(command);
 	    }
-	    else if(this.commandText.equalsIgnoreCase(Arrays.toString(command232))) {
-	    	A_Command command=new CommandCreatePowerPole(id, STOP);
+
+	    else if(this.commandText.equalsIgnoreCase(Arrays.toString(command24))) {
+	    	A_Command command=new CommandCreatePowerStation(id, coordinates_world, coordinates_delta1, idSubstations);
 	    	this.parserHelper.getActionProcessor().schedule(command);
 	    }
-	    else if(this.commandText.equalsIgnoreCase(Arrays.toString(command24)) || this.commandText.equalsIgnoreCase(Arrays.toString(command243))) {
-	    	A_Command command=new CommandCreatePowerStation(id, coordinates_world, coordinates_delta1, idSubstations);
+	    else if(this.commandText.equalsIgnoreCase(Arrays.toString(command25))) {
+	    	A_Command command=new CommandCreatePowerStation(id, coordinates_world, coordinates_delta, idSubstations);
 	    	this.parserHelper.getActionProcessor().schedule(command);
 	    }
 	}
@@ -158,4 +145,3 @@ public class CommandParser {
 		return idn;
 	}
 }
-
