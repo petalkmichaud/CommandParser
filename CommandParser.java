@@ -20,6 +20,10 @@ import cs350f20project.controller.command.creational.CommandCreateTrackCrossover
 import cs350f20project.controller.command.creational.CommandCreateTrackCurve;
 import cs350f20project.controller.command.creational.CommandCreateTrackEnd;
 import cs350f20project.controller.command.creational.CommandCreateTrackLayout;
+import cs350f20project.controller.command.creational.CommandCreateTrackRoundhouse;
+import cs350f20project.controller.command.creational.CommandCreateTrackStraight;
+import cs350f20project.controller.command.creational.CommandCreateTrackSwitchTurnout;
+import cs350f20project.controller.command.creational.CommandCreateTrackSwitchWye;
 import cs350f20project.controller.command.meta.CommandMetaDoExit;
 import cs350f20project.controller.command.structural.CommandStructuralCommit;
 import cs350f20project.datatype.Angle;
@@ -30,23 +34,31 @@ import cs350f20project.datatype.Longitude;
 
 public class CommandParser {
  
+  //private CoordinatesDelta deltaOrigin=new CoordinatesDelta(1,1);
+  
   private LinkedList<String> idSubstations=new LinkedList<>();
-  private Angle angle;
-  private CoordinatesDelta coordinates_delta;
-  private CoordinatesDelta coordinates_delta3=new CoordinatesDelta(1,1);
-  private String id1="sss";
-  private String idn ="ssss";
-  private String id2="zz";
-  public static String id="zzz";
+  
+  
+  private Angle angle3=new Angle(1);
+  private Angle angle1;
+  private Angle angle2;
+  private CoordinatesDelta coordinates_deltaE;    //2end
+  private CoordinatesDelta coordinates_delta;     //2origins
+  private CoordinatesDelta coordinates_delta3;
+  private String id1;
+  private String idn;
+  private String id2;
+  public static String id;
   private int integer;
-  private Latitude latitude=new Latitude(1);
+  private Latitude latitude;
   private String string;
-  private Longitude longitude=new Longitude(1);
-  private CoordinatesDelta coordinates_delta1=new CoordinatesDelta(1,1);
-  private CoordinatesDelta coordinates_delta2=new CoordinatesDelta(1,1);
-
-  private CoordinatesDelta coordinates_delta4=new CoordinatesDelta(1,1);
-  private CoordinatesWorld coordinates_world=new CoordinatesWorld(latitude, longitude);
+  private Longitude longitude;
+  private CoordinatesDelta coordinates_delta1;
+  private CoordinatesDelta coordinates_delta2;
+  private double number1;
+  private double number2;
+  private CoordinatesDelta coordinates_delta4;
+  private CoordinatesWorld coordinates_world;
   private double number=1;
   private double real;
   private TrackLocator START;
@@ -54,9 +66,9 @@ public class CommandParser {
   private String commandText;
   private MyParserHelper parserHelper;
   private CommandParserTokenManager tm;
-  private PointLocator locater=new PointLocator(coordinates_world, coordinates_delta1, coordinates_delta2);
-  private LinkedList<String> idpoles=new LinkedList();
-  private LinkedList<String> trackIDs=new LinkedList<String>();
+  private PointLocator locater;
+  private LinkedList<String> idpoles;
+  private LinkedList<String> trackIDs;
 	public CommandParser(MyParserHelper parserHelper, String commandText){
 		this.parserHelper=parserHelper;
 		this.commandText=commandText;
@@ -80,6 +92,15 @@ public class CommandParser {
 	    String[] command43=("CREATE TRACK CURVE "+id1+"REFERENCE "+coordinates_world+"'$' "+id2+"DELTA START "+coordinates_delta1+"END"+coordinates_delta2+"DISTANCE ORIGIN "+number+" | "+"ORIGIN "+coordinates_delta3).split(" ");
     //45
         String[] command45=("CREATE TRACK LAYOUT "+id1+"WITH TRACKS "+idn+"+").split(" ");
+    //46 ,
+        String[] command46=("CREATE TRACK ROUNDHOUSE "+id1+"REFERENCE "+coordinates_world+" | '$' "+id2+"DELTA ORIGIN "+coordinates_delta1+"ANGLE ENTRY "+angle1+"START "+angle2+"END "+angle3+"WITH "+integer+"SPURS LENGTH "+number1+"TURNTABLE LENGTH "+number2).split(" ");
+    //47 ,
+        String[] command47=("CREATE TRACK STRAIGHT "+id1+"REFERENCE "+coordinates_world+" | '$' "+id2+"DELTA START "+coordinates_delta1+"END "+coordinates_delta2).split(" ");
+    //48,
+        String[] command48=("CREATE TRACK SWITCH TURNOUT "+id1+"REFERENCE "+coordinates_world+" | '$' "+id2+"STRAIGHT DELTA START "+coordinates_delta1+"END "+coordinates_delta2+"CURVE DELTA START "+coordinates_delta3+"END "+coordinates_delta4+"DISTANCE ORIGIN "+number).split(" ");
+   //49 
+        String[] command49=("CREATE TRACK SWITCH WYE "+id1+"REFERENCE "+coordinates_world+" | '$' "+id2+"DELTA START "+coordinates_delta1+"END "+coordinates_delta2+"DISTANCE ORIGIN "+number1+"DELTA START "+coordinates_delta3+"END "+coordinates_delta4+"DISTANCE ORIGIN"+number2).split(" ");
+   
 	//22 
 	    String[] command22=("CREATE POWER CATENARY "+id1+"WITH POLES "+idn+"+").split(" ");
 	//23 
@@ -147,8 +168,26 @@ public class CommandParser {
 	    	A_Command command=new CommandCreateTrackLayout(id,trackIDs);
 	    	this.parserHelper.getActionProcessor().schedule(command);
 	    }
+	    else if(this.commandText.equalsIgnoreCase(Arrays.toString(command46))) {
+	    	A_Command command=new CommandCreateTrackRoundhouse(id, coordinates_world, coordinates_delta1, angle1, angle2, angle3,integer,number1,number2 );
+	    	this.parserHelper.getActionProcessor().schedule(command);
+	    }
+	    else if(this.commandText.equalsIgnoreCase(Arrays.toString(command47))) {
+	    	A_Command command=new CommandCreateTrackStraight(id, locater);
+	    	this.parserHelper.getActionProcessor().schedule(command);
+	    }
+	    else if(this.commandText.equalsIgnoreCase(Arrays.toString(command48))) {
+	    	A_Command command =new CommandCreateTrackSwitchTurnout(id, coordinates_world,coordinates_delta1, coordinates_delta2, coordinates_delta3, coordinates_delta4, coordinates_delta);
+	    	this.parserHelper.getActionProcessor().schedule(command);
+	    }
+	    else if(this.commandText.equalsIgnoreCase(Arrays.toString(command49))) {
+	    	A_Command command =new CommandCreateTrackSwitchWye(id, coordinates_world, coordinates_delta1, coordinates_delta2, coordinates_delta3, coordinates_delta4,coordinates_deltaE,coordinates_delta);
+	    	this.parserHelper.getActionProcessor().schedule(command);
+	    }
+	    
 	        
 	}
+	
 	public String getID() {
 		return this.id;
 	}
