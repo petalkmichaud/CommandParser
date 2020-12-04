@@ -1,0 +1,110 @@
+package cs350f20project.controller.cli.parser;
+import java.awt.List;
+import java.util.Arrays;
+import java.util.LinkedList;
+
+import cs350f20project.controller.cli.TrackLocator;
+import cs350f20project.controller.command.A_Command;
+import cs350f20project.controller.command.behavioral.CommandBehavioralBrake;//keep 
+import cs350f20project.controller.command.behavioral.CommandBehavioralSelectBridge;
+import cs350f20project.controller.command.behavioral.CommandBehavioralSelectRoundhouse;
+import cs350f20project.controller.command.behavioral.CommandBehavioralSetDirection;
+import cs350f20project.controller.command.behavioral.CommandBehavioralSetReference;
+import cs350f20project.controller.command.behavioral.CommandBehavioralSelectSwitch;//keep
+import cs350f20project.controller.command.creational.CommandBehaviouralSetSpeed;//keep
+import cs350f20project.controller.command.meta.CommandMetaDoExit;//keep
+import cs350f20project.controller.command.structural.CommandStructuralCommit;
+
+
+
+public class CommandParser {
+	
+	private String commandText;
+	private MyParserHelper parserHelper; 
+	public static String id;
+	private String id1;
+	private String idn;
+	private String id2;
+	private String position; 
+	private boolean isUporDown;
+
+	public CommandParser(MyParserHelper parserHelper, String commandText) {
+		this.commandText = commandText;
+		this.parserHelper= parserHelper; 
+	}
+	
+	public void parse() {
+		// command 51
+		if (this.commandText.equalsIgnoreCase("@exit"))
+		{
+			A_Command command = new CommandMetaDoExit();
+			this.parserHelper.getActionProcessor().schedule(command);
+		}
+	
+		//command 2 - DONE
+		else if (this.commandText.equalsIgnoreCase("DO BRAKE id"))
+		{
+			A_Command command = new CommandBehavioralBrake(id);
+			this.parserHelper.getActionProcessor().schedule(command);
+		}
+		//command 6 - DONE
+		else if(this.commandText.equalsIgnoreCase("DO SELECT DRAWBRIDGE id POSITION ( UP | DOWN )")) {
+			
+			A_Command command = new CommandBehavioralSelectBridge(position, true);
+			this.parserHelper.getActionProcessor().schedule(command);
+			
+		}
+		//command 7 -DONE
+		else if(this.commandText.equalsIgnoreCase("DO SELECT ROUNDHOUSE id POSITION angle ( CLOCKWISE | COUNTERCLOCKWISE )")){
+			
+			A_Command command = new CommandBehavioralSelectRoundhouse(commandText, null, false;
+			this.parserHelper.getActionProcessor().schedule(command);
+		}
+		//command 8-DONE
+		else if (this.commandText.equalsIgnoreCase("DO SELECT SWITCH id PATH ( PRIMARY | SECONDARY )"))
+		{
+			A_Command command = new CommandBehavioralSelectSwitch(commandText, false);
+			this.parserHelper.getActionProcessor().schedule(command);
+		}
+		
+		//command 11
+		
+		else if(this.commandText.equalsIgnoreCase("DO SET id DIRECTION ( FORWARD | BACKWARD")){
+			A_Command command = new  CommandBehaviouralSetDirection(commandText,false);	//check variables pssed in
+			this.parserHelper.getActionProcessor().schedule(command);
+		
+		}
+		
+		//command 12
+		else if(this.commandText.equalsIgnoreCase("DO SET REFERENCE ENGINE id")){
+		
+			A_Command command = new  CommandBehaviouralSetReference(commandText);	//check variables
+			this.parserHelper.getActionProcessor().schedule(command);
+		}
+		
+		//command 15
+		else if(){this.commandText.equalsIgnoreCase("DO SET id SPEED number")){
+			
+			A_Command command - new CommandBehaviouralSetSpeed(commandText);//check passed in variables 
+			this.parserHelper.getActionProcessor().schedule(command);
+		}
+		
+		//command 55
+		else if(this.commandText.equalsIgnoreCase("CLOSE view id")) {
+			
+			A_Command command = new CommandMetaViewDestroy(commandText); //check passed in variables 
+			this.parserHelper.getActionProcessor(.schedule(command));
+		}
+		
+		//command 60
+		else if(this.commandText.equals("COMMIT")) {
+	    	A_Command command=new CommandStructuralCommit();
+	    	this.parserHelper.getActionProcessor().schedule(command);
+	    }
+	    
+	}
+		
+		public String getID() {
+			return this.id;
+		}
+}
