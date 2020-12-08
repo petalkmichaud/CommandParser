@@ -37,8 +37,8 @@ public class CommandParser {
 	private String[] command7CounterClockwise = ("DO SELECT ROUNDHOUSE " + id + " POSITION " + angle + " COUNTERCLOCKWISE").split(" ");
 	private String[] command8Primary = ("DO SELECT SWITCH " + id + " PATH PRIMARY").split(" ");
 	private String[] command8Secondary = ("DO SELECT SWITCH " + id + " PATH SECONDARY").split(" ");
-	private String[] command11a =("DO SET id DIRECTION " + id + " FORWARD").split(" ");
-	private String[] command11b =("DO SET id DIRECTION " + id + " BACKWARD").split(" ");
+	private String[] command11Forward =("DO SET id DIRECTION " + id + " FORWARD").split(" ");
+	private String[] command11Backward =("DO SET id DIRECTION " + id + " BACKWARD").split(" ");
 	private String [] command12 =("DO SET REFERENCE ENGINE " + id).split(" ");
 	private String[] command15 = ("DO SET id SPEED number" + id).split(" ");
 
@@ -61,14 +61,14 @@ public class CommandParser {
 			A_Command command = new CommandBehavioralBrake(id);
 			this.parserHelper.getActionProcessor().schedule(command);
 		}
-		//command 6 UP
+		//command 6 UP - DONE
 		else if(this.commandText.equalsIgnoreCase(command6Up)) {
 			
 			A_Command command = new CommandBehavioralSelectBridge(position, isUp);
 			this.parserHelper.getActionProcessor().schedule(command);
 			
 		}
-		//command 6 DOWN 
+		//command 6 DOWN - DONE
 		else if(this.commandText.equalsIgnoreCase(command6Down)) {
 			
 			A_Command command = new CommandBehavioralSelectBridge(position, isDown);
@@ -100,43 +100,40 @@ public class CommandParser {
 			this.parserHelper.getActionProcessor().schedule(command);
 		}
 		
-		//command 11a -DONE
+		//command 11 Forward -DONE
 		
-		else if(this.commandText.equalsIgnoreCase(command11a)){
+		else if(this.commandText.equalsIgnoreCase(command11Forward)){
 			
 			A_Command command = new  CommandBehaviouralSetDirection(commandText,false);	
 			this.parserHelper.getActionProcessor().schedule(command);
 		
 		}
-		//command11b-DONE 
-		else if(this.commandText.equalsIgnoreCase(command11b)){
+		//command11 Backward -DONE 
+		else if(this.commandText.equalsIgnoreCase(command11Backward)){
 			
-		}
-			A_Command command = new  CommandBehaviouralSetDirection(commandText,false);	
+			A_Command command = new  CommandBehaviuralSetDirection(commandText,false);	
 			this.parserHelper.getActionProcessor().schedule(command);
-		
 		}
 		
 		//command 12-DONE 
 		else if(this.commandText.equalsIgnoreCase(command12)){
 		
-			A_Command command = new  CommandBehaviouralSetReference(commandText);	//check variables
+			A_Command command = new  CommandBehaviouralSetReference(commandText);
 			this.parserHelper.getActionProcessor().schedule(command);
 		}
 		
 		//command 15-DONE
-		else if(){this.commandText.equalsIgnoreCase(command15)){
+		else if(this.commandText.equalsIgnoreCase(command15)){
 			
-			A_Command command - new CommandBehaviouralSetSpeed(commandText);//check passed in variables 
+			A_Command command - new CommandBehaviouralSetSpeed(commandText);
 			this.parserHelper.getActionProcessor().schedule(command);
 		}
-		//commnand 52 here 
-			
+	
 		//command 55
 		else if(this.commandText.equalsIgnoreCase("CLOSE view id")) {
 			
 			A_Command command = new CommandMetaViewDestroy(id); 
-			this.parserHelper.getActionProcessor(.schedule(command));
+			this.parserHelper.getActionProcessor().schedule(command));
 		}
 		
 		//command 60
@@ -147,8 +144,4 @@ public class CommandParser {
 	    
 	}
 		
-	/*	public String getID() {
-			return this.id;
-		}
-	*/
 }
