@@ -104,28 +104,28 @@ public class CommandParser {
 		
 		else if(this.commandText.equalsIgnoreCase(command11Forward)){
 			
-			A_Command command = new  CommandBehaviouralSetDirection(commandText,false);	
+			A_Command command = new  CommandBehavioralSetDirection(commandText,false);	
 			this.parserHelper.getActionProcessor().schedule(command);
 		
 		}
 		//command11 Backward -DONE 
 		else if(this.commandText.equalsIgnoreCase(command11Backward)){
 			
-			A_Command command = new  CommandBehaviuralSetDirection(commandText,false);	
+			A_Command command = new  CommandBehavioralSetDirection(commandText,false);	
 			this.parserHelper.getActionProcessor().schedule(command);
 		}
 		
 		//command 12-DONE 
 		else if(this.commandText.equalsIgnoreCase(command12)){
 		
-			A_Command command = new  CommandBehaviouralSetReference(commandText);
+			A_Command command = new  CommandBehavioralSetReference(commandText);
 			this.parserHelper.getActionProcessor().schedule(command);
 		}
 		
 		//command 15-DONE
 		else if(this.commandText.equalsIgnoreCase(command15)){
 			
-			A_Command command - new CommandBehaviouralSetSpeed(commandText);
+			A_Command command - new CommandBehavioralSetSpeed(commandText);
 			this.parserHelper.getActionProcessor().schedule(command);
 		}
 	
@@ -145,3 +145,4 @@ public class CommandParser {
 	}
 		
 }
+
